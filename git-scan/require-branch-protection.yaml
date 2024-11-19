@@ -1,0 +1,22 @@
+apiVersion: json.kyverno.io/v1alpha1
+kind: ValidatingPolicy
+metadata:
+  name: require-branch-protection
+  annotations:
+    policies.kyverno.io/title: Require Branch Protection
+    policies.kyverno.io/category: Git Repository Settings
+    policies.kyverno.io/severity: critical
+    policies.kyverno.io/description: >-
+      Branch protection rules are applied to branches in a repository to enforce certain requirements, such as preventing direct pushes or requiring pull request reviews before merging.
+      It is critical for ensuring the stability and security of codebases by enforcing workflows like mandatory code review and preventing accidental or malicious changes to important branches (e.g., main or master).
+spec:
+  rules:
+    - name: require-branch-protection
+      match:
+        any:
+        - (name != null): true
+      assert:
+        all:
+        - message: Branch protection rules should enabled for the Git repository
+          check:
+            (branch_protection_rules != null): true

@@ -1,0 +1,23 @@
+apiVersion: json.kyverno.io/v1alpha1
+kind: ValidatingPolicy
+metadata:
+  name: check-min-approvals
+  annotations:
+    policies.kyverno.io/title: Check Minimum Approvals
+    policies.kyverno.io/category: Git Repository Settings
+    policies.kyverno.io/severity: medium
+    policies.kyverno.io/description: >-
+      By enforcing a minimum number of reviews and approvals, this setting ensures that changes to the codebase are thoroughly examined and reduces the likelihood of errors or undesirable changes. It also prevents a single person from having unilateral control over the codebase, which enhances the security and collaboration within the development team.
+spec:
+  rules:
+    - name: check-min-approvals
+      match:
+        any:
+        - (name != null): true
+      assert:
+        all:
+        - message: Pull Requests require a minimum of one approval before merging
+          check:
+            branch_protection_rules:
+              required_pull_request_reviews:
+                (required_approving_review_count < `1`): false

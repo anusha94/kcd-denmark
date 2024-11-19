@@ -1,0 +1,21 @@
+apiVersion: json.kyverno.io/v1alpha1
+kind: ValidatingPolicy
+metadata:
+  name: require-signed-commits
+  annotations:
+    policies.kyverno.io/title: Require Signed Commits
+    policies.kyverno.io/category: Git Repository Settings
+    policies.kyverno.io/severity: critical
+    policies.kyverno.io/description: >-
+      Signed commits provide an additional layer of security by verifying that the code changes came from trusted contributors, reducing the risk of introducing malicious code.
+spec:
+  rules:
+    - name: require-signed-commits
+      match:
+        any:
+        - (name != null): true
+      assert:
+        all:
+        - message: Signed commits should be mandatory for Git repositories
+          check:
+            signed_commits_required: true

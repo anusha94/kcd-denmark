@@ -1,0 +1,39 @@
+name: Scan K8s Configurations
+run-name: ${{ github.actor }} has triggered Scan Action 🚀
+on:
+  pull_request:
+    branches:
+      - "main"
+    paths:
+      - "shift-left/k8s/**"
+
+jobs:
+  scan-manifests:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout PR branch
+      uses: actions/checkout@v3
+      with:
+        # Checks out the repository linked to the PR
+        repository: ${{ github.event.pull_request.head.repo.full_name }}
+        # Checks out the branch from the PR
+        ref: ${{ github.event.pull_request.head.ref }}
+
+    - name: nctl-scan-installer
+      uses: supplypike/setup-bin@v4
+      with:
+        uri: https://dl.nirmata.io/nctl/nctl_4.2.4/nctl_4.2.4_linux_386.zip
+        name: 'nctl'
+        version: '4.2.4'
+
+    - name: Check nctl version
+      run: |
+        nctl version
+
+    - name: NCTL Scan App Manifests
+      run: |
+        nctl scan kubernetes \
+          --resources shift-left/k8s \
+          --policy-sets pss-baseline,pss-restricted \
+          --details --publish
