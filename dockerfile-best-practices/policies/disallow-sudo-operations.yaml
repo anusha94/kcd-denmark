@@ -13,7 +13,6 @@ spec:
     - name: detect-sudo-operations
       match:
         all:
-        - ($analyzer.resource.type): dockerfile
         - (Stages[].Commands[?Name=='RUN'].CmdLine[][] | length(@) > `0`): true
       assert:
         any:

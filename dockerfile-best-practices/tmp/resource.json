@@ -1,0 +1,86 @@
+[
+    {
+        "MetaArgs": null,
+        "Stages": [
+            {
+                "BaseName": "python:latest",
+                "Commands": [
+                    {
+                        "Name": "WORKDIR",
+                        "Path": "/app"
+                    },
+                    {
+                        "Chmod": "",
+                        "Chown": "",
+                        "DestPath": ".",
+                        "From": "",
+                        "Link": false,
+                        "Name": "COPY",
+                        "SourceContents": null,
+                        "SourcePaths": [
+                            "."
+                        ]
+                    },
+                    {
+                        "CmdLine": [
+                            "pip install --no-cache-dir -r requirements.txt"
+                        ],
+                        "Files": null,
+                        "FlagsUsed": [],
+                        "Name": "RUN",
+                        "PrependShell": true
+                    },
+                    {
+                        "CmdLine": [
+                            "sudo apt-get install -y python3"
+                        ],
+                        "Files": null,
+                        "FlagsUsed": [],
+                        "Name": "RUN",
+                        "PrependShell": true
+                    },
+                    {
+                        "Name": "EXPOSE",
+                        "Ports": [
+                            "5000"
+                        ]
+                    },
+                    {
+                        "Name": "EXPOSE",
+                        "Ports": [
+                            "22"
+                        ]
+                    },
+                    {
+                        "CmdLine": [
+                            "python",
+                            "app.py"
+                        ],
+                        "Files": null,
+                        "Name": "CMD",
+                        "PrependShell": false
+                    }
+                ],
+                "Comment": "",
+                "From": {
+                    "Image": "python:latest"
+                },
+                "Location": [
+                    {
+                        "End": {
+                            "Character": 0,
+                            "Line": 2
+                        },
+                        "Start": {
+                            "Character": 0,
+                            "Line": 2
+                        }
+                    }
+                ],
+                "Name": "",
+                "Platform": "",
+                "SourceCode": "FROM python:latest"
+            }
+        ]
+    }
+]
